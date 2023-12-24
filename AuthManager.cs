@@ -1,4 +1,6 @@
-﻿namespace COMP2001 {
+﻿using System.Security.Cryptography;
+
+namespace COMP2001 {
     public class AuthManager {
 
         public static int MILLISECONDS_PER_MINUTE = 1000 * 60; 
@@ -25,6 +27,19 @@
         private AuthManager() {
             authTokens = new Dictionary<string, TokenInfo>();
             tokenFromID = new Dictionary<int, string>();
+        }
+
+
+
+
+
+        private string GenerateNewToken() {
+
+            byte[] randomBytes = new byte[64];
+            RandomNumberGenerator.Fill(randomBytes);
+
+            return BitConverter.ToString(randomBytes).Replace("-", "");
+
         }
 
     }
