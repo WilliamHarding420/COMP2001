@@ -29,9 +29,24 @@ namespace COMP2001 {
             tokenFromID = new Dictionary<int, string>();
         }
 
+        public string AuthorizeUser(int userID) {
 
+            if (tokenFromID.ContainsKey(userID)) 
+                return tokenFromID[userID];
 
+            string token = GenerateNewToken();
 
+            TokenInfo tokenInfo = new TokenInfo {
+                UserID = userID,
+                ExpirationTime = ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeMilliseconds() + (5 * MILLISECONDS_PER_MINUTE)
+            };
+
+            authTokens.Add(token, tokenInfo);
+            tokenFromID.Add(userID, token);
+
+            return token;
+
+        }
 
         private string GenerateNewToken() {
 
