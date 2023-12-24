@@ -23,6 +23,9 @@ namespace COMP2001.Controllers {
             bool authorized = await AuthenticationAPI.AuthenticateUser(bodyUser.Email, bodyUser.Password);
             string token = "";
 
+            if (authorized)
+                token = AuthManager.instance.AuthorizeUser(0);
+
             AuthResponse response = new AuthResponse {
                 Authorized = authorized.ToString(),
                 Token = token
