@@ -1,6 +1,8 @@
 ﻿namespace COMP2001 {
     public class AuthManager {
 
+        public static int MILLISECONDS_PER_MINUTE = 1000 * 60; 
+
         private static AuthManager _instance;
 
         public static AuthManager instance {
