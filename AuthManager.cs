@@ -12,8 +12,17 @@
             }
         }
 
+        public struct TokenInfo {
+            public int UserID { get; set; }
+            public long ExpirationTime { get; set; }
+        }
+
+        private Dictionary<int, string> tokenFromID;
+        private Dictionary<string, TokenInfo> authTokens;
+
         private AuthManager() {
             authTokens = new Dictionary<string, TokenInfo>();
+            tokenFromID = new Dictionary<int, string>();
         }
 
     }
