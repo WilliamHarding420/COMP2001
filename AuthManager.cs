@@ -3,7 +3,7 @@
 
         private static AuthManager _instance;
 
-        public AuthManager instance {
+        public static AuthManager instance {
             get {
                 if (_instance == null)
                     _instance = new AuthManager();
