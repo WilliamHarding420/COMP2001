@@ -19,5 +19,22 @@ namespace COMP2001 {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
             optionsBuilder.UseSqlServer(ConnectionString);
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+
+            modelBuilder.HasDefaultSchema("CW2");
+
+            modelBuilder.Entity<UserActivityJoin>().HasNoKey().ToView("Favourite Activities");
+            modelBuilder.Entity<ActivityName>().HasNoKey().ToView("Activity Names");
+
+        }
+
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<ActivityData> Activities { get; set; }
+        public virtual DbSet<UserActivity> UserFavouriteActivity { get; set; }
+
+        public virtual DbSet<UserActivityJoin> UserActivityJoin { get; set; }
+        public virtual DbSet<ActivityName> ActivityNames { get; set; }
+
     }
 }
