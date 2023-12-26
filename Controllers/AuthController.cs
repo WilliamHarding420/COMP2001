@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
 namespace COMP2001.Controllers {
@@ -18,7 +19,10 @@ namespace COMP2001.Controllers {
             StreamReader reader = new StreamReader(Request.Body);
             string bodyString = await reader.ReadToEndAsync();
 
-            AuthenticationAPI.User bodyUser = JsonSerializer.Deserialize<AuthenticationAPI.User>(bodyString);
+            JsonSerializerOptions options = new JsonSerializerOptions();
+            options.PropertyNameCaseInsensitive = true;
+
+            AuthenticationAPI.User bodyUser = JsonSerializer.Deserialize<AuthenticationAPI.User>(bodyString, options);
 
             bool authorized = await AuthenticationAPI.AuthenticateUser(bodyUser.Email, bodyUser.Password);
             string token = "";
