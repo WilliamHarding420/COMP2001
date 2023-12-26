@@ -33,6 +33,7 @@ namespace COMP2001 {
                 if (jsonArray == null)
                     return false;
 
+                // Whether or not the user is authorized is contained within the index 1 of the JSON Array returned from the API
                 return bool.Parse(jsonArray[1].ToLower());
 
             }
