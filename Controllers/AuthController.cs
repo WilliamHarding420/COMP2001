@@ -24,6 +24,7 @@ namespace COMP2001.Controllers {
         [Produces("application/json")]
         public async Task<string> Auth([FromBody] AuthenticationAPI.User bodyUser) {
 
+            Database db = new();
 
             JsonSerializerOptions options = new JsonSerializerOptions();
             options.PropertyNameCaseInsensitive = true;
@@ -31,8 +32,12 @@ namespace COMP2001.Controllers {
             bool authorized = await AuthenticationAPI.AuthenticateUser(bodyUser.Email, bodyUser.Password);
             string token = "";
 
-            if (authorized)
-                token = AuthManager.instance.AuthorizeUser(0);
+            if (authorized) {
+                User? dbUser = db.Users.Where(user => user.Email == bodyUser.Email).FirstOrDefault();
+
+                if (dbUser != null)
+                    token = AuthManager.instance.AuthorizeUser(dbUser.UserID);
+            }
 
             AuthResponse response = new AuthResponse {
                 Authorized = authorized.ToString(),
