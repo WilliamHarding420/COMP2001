@@ -13,6 +13,11 @@ namespace COMP2001.Controllers {
             public string Password { get; set; }
         }
 
+        /// <summary>
+        /// Adds a new user to the database
+        /// </summary>
+        /// <param name="bodyUser">The user to add to the database</param>
+        /// <returns></returns>
         [HttpPost]
         [Consumes("application/json")]
         [Produces("application/json")]
