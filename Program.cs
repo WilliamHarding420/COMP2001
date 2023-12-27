@@ -1,4 +1,7 @@
 
+using Microsoft.OpenApi.Models;
+using System.Reflection;
+
 namespace COMP2001 {
     public class Program {
         public static void Main(string[] args) {
@@ -9,7 +12,17 @@ namespace COMP2001 {
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(options => {
+                options.SwaggerDoc("v1", new OpenApiInfo {
+                    Title = "Profile API",
+                    Version = "v1"
+                });
+
+                string xmlPath = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                xmlPath = Path.Combine(AppContext.BaseDirectory, xmlPath);
+
+                options.IncludeXmlComments(xmlPath);
+            });
 
             var app = builder.Build();
 
@@ -20,7 +33,6 @@ namespace COMP2001 {
             }
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
