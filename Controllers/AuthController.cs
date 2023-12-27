@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using COMP2001.data;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
@@ -13,16 +14,19 @@ namespace COMP2001.Controllers {
     [Route("/user/auth")]
     public class AuthController : Controller {
 
+        /// <summary>
+        /// Authenticates the details sent to it.
+        /// </summary>
+        /// <param name="bodyUser">The user to authenticate</param>
+        /// <returns>Whethere or not you were verified, as well as your auth token if you were</returns>
         [HttpPost]
-        public async Task<string> Auth() {
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        public async Task<string> Auth([FromBody] AuthenticationAPI.User bodyUser) {
 
-            StreamReader reader = new StreamReader(Request.Body);
-            string bodyString = await reader.ReadToEndAsync();
 
             JsonSerializerOptions options = new JsonSerializerOptions();
             options.PropertyNameCaseInsensitive = true;
-
-            AuthenticationAPI.User bodyUser = JsonSerializer.Deserialize<AuthenticationAPI.User>(bodyString, options);
 
             bool authorized = await AuthenticationAPI.AuthenticateUser(bodyUser.Email, bodyUser.Password);
             string token = "";
