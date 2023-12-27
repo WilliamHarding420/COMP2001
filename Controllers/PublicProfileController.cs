@@ -16,6 +16,11 @@ namespace COMP2001.Controllers {
 
         }
 
+        /// <summary>
+        /// Gets a user's public information
+        /// </summary>
+        /// <param name="id">The ID of the user to retrieve</param>
+        /// <returns>The user's public information</returns>
         [HttpGet]
         [Produces("application/json")]
         public async Task<string> Get([FromRoute] int id) {
