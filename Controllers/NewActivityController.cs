@@ -12,20 +12,19 @@ namespace COMP2001.Controllers {
             public string Activity { get; set; }
         }
 
+        /// <summary>
+        /// Adds a new activity to the database
+        /// </summary>
+        /// <param name="bodyActivity">The activity to add</param>
+        /// <returns></returns>
         [HttpPost]
-        public async Task NewActivity() {
-
-            StreamReader reader = new StreamReader(Request.Body);
-            string bodyString = await reader.ReadToEndAsync();
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        public async Task NewActivity([FromBody] BodyActivity bodyActivity) {
 
             Database db = new();
 
-            JsonSerializerOptions options = new JsonSerializerOptions();
-            options.PropertyNameCaseInsensitive = true;
-
-            BodyActivity bodyActivity = JsonSerializer.Deserialize<BodyActivity>(bodyString, options);
-
-            ActivityData activity = new ActivityData();
+            ActivityData activity = new();
             activity.Activity = bodyActivity.Activity;
 
             await db.Activities.AddAsync(activity);
