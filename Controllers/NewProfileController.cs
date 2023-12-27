@@ -20,6 +20,11 @@ namespace COMP2001.Controllers {
 
             Database db = new();
 
+            User? existingEmail = db.Users.Where(user => user.Email == bodyUser.Email).FirstOrDefault();
+
+            if (existingEmail != null)
+                return;
+
             User user = new User();
 
             // Parameters from request body
@@ -32,6 +37,8 @@ namespace COMP2001.Controllers {
             user.ActivityTimePreference = "Pace";
             user.Language = "English";
             user.Admin = "false";
+
+
 
             await db.Users.AddAsync(user);
             await db.SaveChangesAsync();
