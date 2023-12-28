@@ -33,8 +33,8 @@ namespace COMP2001 {
         public virtual DbSet<ActivityData> Activities { get; set; }
         public virtual DbSet<UserActivity> UserFavouriteActivity { get; set; }
 
-        public virtual DbSet<UserActivityJoin> UserActivityJoin { get; set; }
-        public virtual DbSet<ActivityName> ActivityNames { get; set; }
+        public virtual DbSet<UserActivityJoin> UserActivityJoinView { get; set; }
+        public virtual DbSet<ActivityName> ActivityNamesView { get; set; }
 
     }
 }
