@@ -31,7 +31,7 @@ namespace COMP2001.data {
 
         public string Password { get; set; }
 
-        public string? Language { get; set; }
+        public string Language { get; set; }
 
         public string Admin { get; set; }
 
