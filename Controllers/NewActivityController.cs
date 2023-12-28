@@ -9,6 +9,7 @@ namespace COMP2001.Controllers {
     public class NewActivityController : Controller {
 
         public struct BodyActivity {
+            public string Token { get; set; }
             public string Activity { get; set; }
         }
 
@@ -20,15 +21,31 @@ namespace COMP2001.Controllers {
         [HttpPost]
         [Consumes("application/json")]
         [Produces("application/json")]
-        public async Task NewActivity([FromBody] BodyActivity bodyActivity) {
+        public async Task<string> NewActivity([FromBody] BodyActivity bodyActivity) {
 
             Database db = new();
+
+            AuthManager authManager = AuthManager.instance;
+            int userID = authManager.GetIDFromToken(bodyActivity.Token);
+
+            if (userID == -1)
+                return JsonSerializer.Serialize(new GenericResponse(false, "Invalid auth token."));
+
+            User? dbUser = db.Users.Where(user => user.UserID == userID).FirstOrDefault();
+
+            if (dbUser == null)
+                return JsonSerializer.Serialize(new GenericResponse(false, "Invalid user."));
+
+            if (!authManager.CheckAdmin(dbUser))
+                return JsonSerializer.Serialize(new GenericResponse(false, "Unauthorized."));
 
             ActivityData activity = new();
             activity.Activity = bodyActivity.Activity;
 
             await db.Activities.AddAsync(activity);
             await db.SaveChangesAsync();
+
+            return JsonSerializer.Serialize(new GenericResponse(true, "Activity successfully added."));
 
         }
 
