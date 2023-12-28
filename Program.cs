@@ -3,6 +3,20 @@ using Microsoft.OpenApi.Models;
 using System.Reflection;
 
 namespace COMP2001 {
+
+    public struct GenericResponse {
+
+        public bool Success { get; set; }
+
+        public string Message { get; set; }
+
+        public GenericResponse(bool _Success, string _Message) {
+            Success = _Success;
+            Message = _Message;
+        }
+
+    }
+
     public class Program {
         public static void Main(string[] args) {
             var builder = WebApplication.CreateBuilder(args);
