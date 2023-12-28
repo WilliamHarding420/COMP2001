@@ -48,6 +48,15 @@ namespace COMP2001 {
 
         }
 
+        public int GetIDFromToken(string token) {
+
+            if (!authTokens.ContainsKey(token))
+                return -1;
+
+            return authTokens[token].UserID;
+
+        }
+
         private string GenerateNewToken() {
 
             byte[] randomBytes = new byte[64];
