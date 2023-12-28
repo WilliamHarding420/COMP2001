@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using COMP2001.data;
+using System.Security.Cryptography;
 
 namespace COMP2001 {
 
@@ -60,6 +61,41 @@ namespace COMP2001 {
 
             return authTokens[token].UserID;
 
+        }
+
+        public bool CheckAdmin(User? user) {
+
+            if (user == null)
+                return false;
+
+            return bool.Parse(user.Admin);
+
+        }
+
+        public bool CheckAdmin(int userID) {
+
+            User? user = new Database().Users.Where(user => user.UserID == userID).FirstOrDefault();
+
+            if (user == null)
+                return false;
+
+            return bool.Parse(user.Admin);
+
+        }
+
+        public bool CheckAdmin(string token) {
+
+            int userID = GetIDFromToken(token);
+
+            if (userID == -1)
+                return false;
+
+            User? user = new Database().Users.Where(user => user.UserID == userID).FirstOrDefault();
+
+            if (user == null)
+                return false;
+
+            return bool.Parse(user.Admin);
         }
 
         private string GenerateNewToken() {
