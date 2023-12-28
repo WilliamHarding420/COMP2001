@@ -1,6 +1,11 @@
 ﻿using System.Security.Cryptography;
 
 namespace COMP2001 {
+
+    public struct InfoAuth {
+        public string Token { get; set; }
+    }
+
     public class AuthManager {
 
         public static int MILLISECONDS_PER_MINUTE = 1000 * 60; 
