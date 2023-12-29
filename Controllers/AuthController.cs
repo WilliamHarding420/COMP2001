@@ -5,9 +5,9 @@ using System.Text.Json;
 
 namespace COMP2001.Controllers {
 
-    public struct AuthResponse {
-        public string Authorized { get; set; }
-        public string Token { get; set; }
+    public struct AuthResponse(bool authorized, string token) {
+        public bool Authorized { get; set; } = authorized;
+        public string Token { get; set; } = token;
     }
 
     [ApiController]
