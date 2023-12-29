@@ -1,5 +1,6 @@
 ﻿using COMP2001.data;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace COMP2001.Controllers {
 
@@ -21,14 +22,17 @@ namespace COMP2001.Controllers {
         [HttpPost]
         [Consumes("application/json")]
         [Produces("application/json")]
-        public async Task NewUser([FromBody] BodyUser bodyUser) {
+        public async Task<string> NewUser([FromBody] BodyUser bodyUser) {
 
-            Database db = new();
+            if (bodyUser.Username.Trim().Equals("") || bodyUser.Email.Trim().Equals("") || bodyUser.Password.Trim().Equals(""))
+                return JsonSerializer.Serialize(new GenericResponse(false, "No arguments can be empty."));
+
+                Database db = new();
 
             User? existingEmail = db.Users.Where(user => user.Email == bodyUser.Email).FirstOrDefault();
 
             if (existingEmail != null)
-                return;
+                return JsonSerializer.Serialize(new GenericResponse(false, "Email already exists."));
 
             User user = new User();
 
@@ -40,11 +44,13 @@ namespace COMP2001.Controllers {
             // Other default user details
             user.Units = "Metric";
             user.ActivityTimePreference = "Pace";
-            user.Language = "English";
+            user.Language = "English (UK)";
             user.Admin = "false";
 
             await db.Users.AddAsync(user);
             await db.SaveChangesAsync();
+
+            return JsonSerializer.Serialize(new GenericResponse(true, "User successfully created."));
 
         }
 
