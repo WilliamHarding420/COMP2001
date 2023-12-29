@@ -43,8 +43,6 @@ namespace COMP2001.Controllers {
             user.Language = "English";
             user.Admin = "false";
 
-
-
             await db.Users.AddAsync(user);
             await db.SaveChangesAsync();
 
