@@ -24,6 +24,8 @@ namespace COMP2001 {
 
             modelBuilder.HasDefaultSchema("CW2");
 
+            modelBuilder.Entity<User>().ToTable(table => table.HasTrigger("RecalcMeasurements"));
+
             modelBuilder.Entity<UserActivityJoin>().HasNoKey().ToView("Favourite Activities");
             modelBuilder.Entity<ActivityName>().HasNoKey().ToView("Activity Names");
 
