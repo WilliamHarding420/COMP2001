@@ -26,25 +26,20 @@ namespace COMP2001.Controllers {
 
             Database db = new();
 
-            JsonSerializerOptions options = new JsonSerializerOptions();
-            options.PropertyNameCaseInsensitive = true;
-
             bool authorized = await AuthenticationAPI.AuthenticateUser(bodyUser.Email, bodyUser.Password);
-            string token = "";
 
-            if (authorized) {
-                User? dbUser = db.Users.Where(user => user.Email == bodyUser.Email).FirstOrDefault();
+            if (!authorized)
+                return JsonSerializer.Serialize(new GenericResponse(false, "Unauthorized."));    
+            
 
-                if (dbUser != null)
-                    token = AuthManager.instance.AuthorizeUser(dbUser.UserID);
-            }
+            User? dbUser = db.Users.Where(user => user.Email == bodyUser.Email).FirstOrDefault();
 
-            AuthResponse response = new AuthResponse {
-                Authorized = authorized.ToString(),
-                Token = token
-            };
+            if (dbUser == null)
+                return JsonSerializer.Serialize(new GenericResponse(false, "Invalid user."));
 
-            return JsonSerializer.Serialize(response); 
+            string token = AuthManager.instance.AuthorizeUser(dbUser.UserID);
+
+            return JsonSerializer.Serialize(new AuthResponse(true, token)); 
 
         }
     }
