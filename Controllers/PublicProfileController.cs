@@ -8,11 +8,11 @@ namespace COMP2001.Controllers {
     [Route("/user/public/{id}")]
     public class PublicProfileController : Controller {
 
-        public struct PublicUser {
+        public struct PublicUser(string username, string? aboutMe, string? profilePictureLink) {
 
-            public string Username { get; set; }
-            public string AboutMe { get; set; }
-            public string ProfilePictureLink { get; set; }
+            public string Username { get; set; } = username;
+            public string? AboutMe { get; set; } = aboutMe;
+            public string? ProfilePictureLink { get; set; } = profilePictureLink;
 
         }
 
@@ -27,19 +27,12 @@ namespace COMP2001.Controllers {
 
             Database db = new();
 
-            User dbUser = db.Users.FirstOrDefault(user => user.UserID == id);
+            User? dbUser = db.Users.FirstOrDefault(user => user.UserID == id);
 
             if (dbUser == null)
-                return JsonSerializer.Serialize(new Dictionary<string, string> {
-                    { "error", "User ID doesn't exist." }
-                });
+                return JsonSerializer.Serialize(new GenericResponse(false, "User doesn't exist."));
 
-            PublicUser user = new PublicUser();
-            user.Username = dbUser.Username;
-            user.AboutMe = dbUser.AboutMe;
-            user.ProfilePictureLink = dbUser.ProfilePictureLink;
-
-            return JsonSerializer.Serialize(user);
+            return JsonSerializer.Serialize(new PublicUser(dbUser.Username, dbUser.AboutMe, dbUser.ProfilePictureLink));
 
         }
 
