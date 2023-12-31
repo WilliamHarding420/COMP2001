@@ -8,6 +8,11 @@ namespace COMP2001.Controllers {
     [Route("/activity/{id}")]
     public class GetActivityController {
 
+        /// <summary>
+        /// Gets an specific activity from its ID
+        /// </summary>
+        /// <param name="id">The activity's ID</param>
+        /// <returns></returns>
         [HttpGet]
         [Produces("application/json")]
         public async Task<string> GetActivity([FromRoute] int id) {
