@@ -64,6 +64,16 @@ namespace COMP2001 {
             if (!authTokens.ContainsKey(token))
                 return -1;
 
+            TokenInfo tokenInfo = authTokens[token];
+
+            if (CurrentUnixTimeStamp() > tokenInfo.ExpirationTime) {
+                RemoveToken(token);
+                return -1;
+            }
+
+            tokenInfo.ExpirationTime = GetNewExpirationTime();
+            authTokens[token] = tokenInfo;
+
             return authTokens[token].UserID;
 
         }
