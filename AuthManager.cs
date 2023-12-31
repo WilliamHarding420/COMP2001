@@ -44,7 +44,7 @@ namespace COMP2001 {
 
             TokenInfo tokenInfo = new TokenInfo {
                 UserID = userID,
-                ExpirationTime = ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeMilliseconds() + (5 * MILLISECONDS_PER_MINUTE)
+                ExpirationTime = GetNewExpirationTime()
             };
 
             authTokens.Add(token, tokenInfo);
