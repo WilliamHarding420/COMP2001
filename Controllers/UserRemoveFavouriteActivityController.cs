@@ -24,25 +24,25 @@ namespace COMP2001.Controllers {
             int userID = authManager.GetIDFromToken(activityDelete.Token);
 
             if (userID == -1)
-                return JsonSerializer.Serialize(new GenericResponse(false, "Invalid token."));
+                return await GenericResponse<string>.InvalidTokenResponse.Serialize();
 
             Database db = new();
 
             User? dbUser = db.Users.Where(user => user.UserID == userID).FirstOrDefault();
 
             if (dbUser == null)
-                return JsonSerializer.Serialize(new GenericResponse(false, "Invalid user."));
+                return await GenericResponse<string>.InvalidUserResponse.Serialize();
 
             IQueryable<UserActivity> activityFavourited = db.UserFavouriteActivity.Where(userActivity =>
                 userActivity.UserID == userID &&
                 userActivity.ActivityID == activityDelete.ActivityID);
 
             if (!activityFavourited.Any())
-                return JsonSerializer.Serialize(new GenericResponse(false, "Activity not favourited."));
+                return await new GenericResponse<string>(false, "Activity not favourited.").Serialize();
 
             await activityFavourited.ExecuteDeleteAsync();
 
-            return JsonSerializer.Serialize(new GenericResponse(true, "Favourite activity deleted."));
+            return await new GenericResponse<string>(true, "Favourite activity deleted.").Serialize();
             
         }
 

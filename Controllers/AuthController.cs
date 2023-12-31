@@ -5,11 +5,6 @@ using System.Text.Json;
 
 namespace COMP2001.Controllers {
 
-    public struct AuthResponse(bool authorized, string token) {
-        public bool Authorized { get; set; } = authorized;
-        public string Token { get; set; } = token;
-    }
-
     [ApiController]
     [Route("/user/auth")]
     public class AuthController : Controller {
@@ -29,17 +24,17 @@ namespace COMP2001.Controllers {
             bool authorized = await AuthenticationAPI.AuthenticateUser(bodyUser.Email, bodyUser.Password);
 
             if (!authorized)
-                return JsonSerializer.Serialize(new GenericResponse(false, "Unauthorized."));    
+                return await GenericResponse<string>.UnauthorizedResponse.Serialize();  
             
 
             User? dbUser = db.Users.Where(user => user.Email == bodyUser.Email).FirstOrDefault();
 
             if (dbUser == null)
-                return JsonSerializer.Serialize(new GenericResponse(false, "Invalid user."));
+                return await GenericResponse<string>.InvalidUserResponse.Serialize();
 
             string token = AuthManager.instance.AuthorizeUser(dbUser.UserID);
 
-            return JsonSerializer.Serialize(new AuthResponse(true, token)); 
+            return await new GenericResponse<string>(true, token).Serialize(); 
 
         }
     }

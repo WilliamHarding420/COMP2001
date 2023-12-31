@@ -36,16 +36,16 @@ namespace COMP2001.Controllers {
             int userID = authManager.GetIDFromToken(authorization.Token);
 
             if (userID == -1)
-                return JsonSerializer.Serialize(new GenericResponse(false, "Invalid auth token."));
+                return await GenericResponse<string>.InvalidTokenResponse.Serialize();
 
             Database db = new();
 
             User? dbUser = db.Users.Where(user => user.UserID == userID).FirstOrDefault();
 
             if (dbUser == null)
-                return JsonSerializer.Serialize(new GenericResponse(false, "Invalid user."));
+                return await GenericResponse<string>.InvalidUserResponse.Serialize();
 
-            return JsonSerializer.Serialize(new PrivateInfo(dbUser));
+            return await new GenericResponse<PrivateInfo>(true, new PrivateInfo(dbUser)).Serialize();
 
         }
 

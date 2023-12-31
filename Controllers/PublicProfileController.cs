@@ -30,9 +30,9 @@ namespace COMP2001.Controllers {
             User? dbUser = db.Users.FirstOrDefault(user => user.UserID == id);
 
             if (dbUser == null)
-                return JsonSerializer.Serialize(new GenericResponse(false, "User doesn't exist."));
+                return await GenericResponse<string>.InvalidUserResponse.Serialize(); ;
 
-            return JsonSerializer.Serialize(new PublicUser(dbUser.Username, dbUser.AboutMe, dbUser.ProfilePictureLink));
+            return await new GenericResponse<PublicUser>(true, new PublicUser(dbUser.Username, dbUser.AboutMe, dbUser.ProfilePictureLink)).Serialize();
 
         }
 

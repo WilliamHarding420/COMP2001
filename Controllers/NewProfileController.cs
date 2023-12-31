@@ -25,14 +25,14 @@ namespace COMP2001.Controllers {
         public async Task<string> NewUser([FromBody] BodyUser bodyUser) {
 
             if (bodyUser.Username.Trim().Equals("") || bodyUser.Email.Trim().Equals("") || bodyUser.Password.Trim().Equals(""))
-                return JsonSerializer.Serialize(new GenericResponse(false, "No arguments can be empty."));
+                return await new GenericResponse<string>(false, "No arguments can be empty.").Serialize();
 
                 Database db = new();
 
             User? existingEmail = db.Users.Where(user => user.Email == bodyUser.Email).FirstOrDefault();
 
             if (existingEmail != null)
-                return JsonSerializer.Serialize(new GenericResponse(false, "Email already exists."));
+                return await new GenericResponse<string>(false, "Email Already Registered.").Serialize();
 
             User user = new User();
 
@@ -50,7 +50,7 @@ namespace COMP2001.Controllers {
             await db.Users.AddAsync(user);
             await db.SaveChangesAsync();
 
-            return JsonSerializer.Serialize(new GenericResponse(true, "User successfully created."));
+            return await new GenericResponse<string>(true, "User successfully created.").Serialize();
 
         }
 

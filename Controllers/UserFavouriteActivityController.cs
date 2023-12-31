@@ -27,19 +27,19 @@ namespace COMP2001.Controllers {
             int userID = authManager.GetIDFromToken(activityAdd.Token);
 
             if (userID == -1)
-                return JsonSerializer.Serialize(new GenericResponse(false, "Invalid token."));
+                return await GenericResponse<string>.InvalidTokenResponse.Serialize();
 
             Database db = new();
 
             User? dbUser = db.Users.Where(user => user.UserID == userID).FirstOrDefault();
 
             if (dbUser == null)
-                return JsonSerializer.Serialize(new GenericResponse(false, "Invalid user."));
+                return await GenericResponse<string>.InvalidUserResponse.Serialize();
 
             ActivityData? dbActivity = db.Activities.Where(activity => activity.ActivityID == activityAdd.ActivityID).FirstOrDefault();
 
             if (dbActivity == null)
-                return JsonSerializer.Serialize(new GenericResponse(false, "Invalid activity."));
+                return await GenericResponse<string>.InvalidActivityResponse.Serialize();
 
             UserActivity join = new UserActivity();
             join.ActivityID = activityAdd.ActivityID;
@@ -48,7 +48,7 @@ namespace COMP2001.Controllers {
             await db.UserFavouriteActivity.AddAsync(join);
             await db.SaveChangesAsync();
 
-            return JsonSerializer.Serialize(new GenericResponse(true, "Favourite activity added."));
+            return await new GenericResponse<string>(true, "Favourite activity added.").Serialize();
 
         }
 

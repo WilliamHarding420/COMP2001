@@ -27,14 +27,14 @@ namespace COMP2001.Controllers {
             int userID = authManager.GetIDFromToken(auth.Token);
 
             if (userID == -1)
-                return JsonSerializer.Serialize(new GenericResponse(false, "Invalid auth token."));
+                return await GenericResponse<string>.InvalidTokenResponse.Serialize();
 
             Database db = new();
 
             IQueryable<UserActivityJoin> userActivities = db.UserActivityJoinView.Where(join => join.UserID == userID);
             UserActivityJoin[] activityList = userActivities.ToArray();
 
-            return JsonSerializer.Serialize(activityList);
+            return await new GenericResponse<UserActivityJoin[]>(true, activityList).Serialize();
 
         }
 

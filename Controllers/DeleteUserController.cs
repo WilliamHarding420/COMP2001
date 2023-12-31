@@ -18,20 +18,19 @@ namespace COMP2001.Controllers {
             int userID = authManager.GetIDFromToken(auth.Token);
 
             if (userID == -1)
-                return JsonSerializer.Serialize(new GenericResponse(false, "Invalid auth token."));
+                return await GenericResponse<string>.InvalidTokenResponse.Serialize();
 
             Database db = new();
 
             User? dbUser = db.Users.Where(user => user.UserID == userID).FirstOrDefault();
 
             if (dbUser == null)
-                return JsonSerializer.Serialize(new GenericResponse(false, "Invalid user."));
-
+                return await GenericResponse<string>.InvalidUserResponse.Serialize();
 
             bool admin = authManager.CheckAdmin(dbUser);
 
             if (!admin)
-                return JsonSerializer.Serialize(new GenericResponse(false, "Unauthorized."));
+                return await GenericResponse<string>.UnauthorizedResponse.Serialize();
 
             /*
              * 
@@ -41,7 +40,7 @@ namespace COMP2001.Controllers {
 
             await db.Users.Where(user => user.UserID == id).ExecuteDeleteAsync();
 
-            return JsonSerializer.Serialize(new GenericResponse(true, $"User ID {id} deleted successfully."));
+            return await new GenericResponse<string>(true, $"User ID {id} deleted successfully.").Serialize();
 
         }
 
