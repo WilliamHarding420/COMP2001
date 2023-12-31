@@ -21,6 +21,7 @@ namespace COMP2001.data {
         public static GenericResponse<string> UnauthorizedResponse = new GenericResponse<string>(false, "Unauthorized.");
         public static GenericResponse<string> InvalidUserResponse = new GenericResponse<string>(false, "Invalid User.");
         public static GenericResponse<string> InvalidTokenResponse = new GenericResponse<string>(false, "Invalid Auth Token.");
+        public static GenericResponse<string> InvalidActivityResponse = new GenericResponse<string>(false, "Invalid Activity.");
 
     }
 }
