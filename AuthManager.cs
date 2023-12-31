@@ -7,6 +7,11 @@ namespace COMP2001 {
         public string Token { get; set; }
     }
 
+    public struct TokenInfo {
+        public int UserID { get; set; }
+        public long ExpirationTime { get; set; }
+    }
+
     public class AuthManager {
 
         public static int MILLISECONDS_PER_MINUTE = 1000 * 60; 
@@ -20,11 +25,6 @@ namespace COMP2001 {
 
                 return _instance;
             }
-        }
-
-        public struct TokenInfo {
-            public int UserID { get; set; }
-            public long ExpirationTime { get; set; }
         }
 
         private Dictionary<int, string> tokenFromID;
