@@ -27,8 +27,8 @@ namespace COMP2001 {
             }
         }
 
-        private Dictionary<int, string> tokenFromID;
-        private Dictionary<string, TokenInfo> authTokens;
+        public Dictionary<int, string> tokenFromID;
+        public Dictionary<string, TokenInfo> authTokens;
 
         private AuthManager() {
             authTokens = new Dictionary<string, TokenInfo>();
