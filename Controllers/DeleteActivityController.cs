@@ -23,23 +23,23 @@ namespace COMP2001.Controllers {
             int userID = authManager.GetIDFromToken(bodyActivity.Token);
 
             if (userID == -1)
-                return JsonSerializer.Serialize(new GenericResponse(false, "Invalid token."));
+                return await GenericResponse<string>.InvalidTokenResponse.Serialize();
 
             bool checkAdmin = authManager.CheckAdmin(userID);
 
             if (!checkAdmin)
-                return JsonSerializer.Serialize(new GenericResponse(false, "Unauthorized."));
+                return await GenericResponse<string>.UnauthorizedResponse.Serialize();
 
             Database db = new();
 
             IQueryable<ActivityData> activityData = db.Activities.Where(activity => activity.ActivityID == bodyActivity.ActivityID);
 
             if (!activityData.Any())
-                return JsonSerializer.Serialize(new GenericResponse(false, "Activity doesn't exist."));
+                return await GenericResponse<string>.InvalidActivityResponse.Serialize();
 
             await activityData.ExecuteDeleteAsync();
 
-            return JsonSerializer.Serialize(new GenericResponse(true, "Activity deleted."));
+            return await new GenericResponse<string>(true, "Activity Deleted.").Serialize();
 
         }
 

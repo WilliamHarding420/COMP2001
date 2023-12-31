@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using COMP2001.data;
+using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 
 namespace COMP2001.Controllers {
@@ -14,7 +15,7 @@ namespace COMP2001.Controllers {
         [HttpGet]
         [Produces("application/json")]
         public async Task<string> Activities() {
-            return JsonSerializer.Serialize(new Database().Activities.ToArray());
+            return await new GenericResponse<ActivityData[]>(true, new Database().Activities.ToArray()).Serialize();
         }
 
     }

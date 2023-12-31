@@ -29,15 +29,15 @@ namespace COMP2001.Controllers {
             int userID = authManager.GetIDFromToken(bodyActivity.Token);
 
             if (userID == -1)
-                return JsonSerializer.Serialize(new GenericResponse(false, "Invalid auth token."));
+                return await GenericResponse<string>.InvalidTokenResponse.Serialize();
 
             User? dbUser = db.Users.Where(user => user.UserID == userID).FirstOrDefault();
 
             if (dbUser == null)
-                return JsonSerializer.Serialize(new GenericResponse(false, "Invalid user."));
+                return await GenericResponse<string>.InvalidUserResponse.Serialize();
 
             if (!authManager.CheckAdmin(dbUser))
-                return JsonSerializer.Serialize(new GenericResponse(false, "Unauthorized."));
+                return await GenericResponse<string>.UnauthorizedResponse.Serialize();
 
             ActivityData activity = new();
             activity.Activity = bodyActivity.Activity;
@@ -45,7 +45,7 @@ namespace COMP2001.Controllers {
             await db.Activities.AddAsync(activity);
             await db.SaveChangesAsync();
 
-            return JsonSerializer.Serialize(new GenericResponse(true, "Activity successfully added."));
+            return await new GenericResponse<string>(true, "Activity Successfully Added.").Serialize();
 
         }
 

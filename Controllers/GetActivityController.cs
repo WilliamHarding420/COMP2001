@@ -21,9 +21,9 @@ namespace COMP2001.Controllers {
             IQueryable<ActivityData> activities = db.Activities.Where(activity => activity.ActivityID == id);
 
             if (!activities.Any())
-                return JsonSerializer.Serialize(new GenericResponse(false, "No activity found."));
+                return await GenericResponse<string>.InvalidActivityResponse.Serialize();
 
-            return JsonSerializer.Serialize(activities.FirstOrDefault());
+            return await new GenericResponse<ActivityData>(true, activities.FirstOrDefault()).Serialize();
 
         }
 

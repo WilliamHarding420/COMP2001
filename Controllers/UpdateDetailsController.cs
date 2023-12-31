@@ -39,14 +39,14 @@ namespace COMP2001.Controllers {
             int userID = authManager.GetIDFromToken(info.Token);
 
             if (userID == -1)
-                return JsonSerializer.Serialize(new GenericResponse(false, "Invalid auth token."));
+                return await GenericResponse<string>.InvalidTokenResponse.Serialize();
 
             Database db = new();
 
             User? dbUser = db.Users.Where(user => user.UserID == userID).FirstOrDefault();
 
             if (dbUser == null)
-                return JsonSerializer.Serialize(new GenericResponse(false, "Invalid user."));
+                return await GenericResponse<string>.InvalidUserResponse.Serialize();
 
             // Due to a trigger, Units must be updated before height and weight
             dbUser.Units = (info.Units == null) ? dbUser.Units : info.Units;
@@ -67,7 +67,7 @@ namespace COMP2001.Controllers {
             db.Users.Update(dbUser);
             await db.SaveChangesAsync();
 
-            return JsonSerializer.Serialize(new GenericResponse(true, "Details updated."));
+            return await new GenericResponse<string>(true, "Details updated.").Serialize();
 
         }
 
