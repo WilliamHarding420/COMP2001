@@ -63,6 +63,14 @@ namespace COMP2001 {
 
         }
 
+        public long CurrentUnixTimeStamp() {
+            return ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds();
+        }
+
+        public long GetNewExpirationTime() {
+            return CurrentUnixTimeStamp() + (15 * MILLISECONDS_PER_MINUTE);
+        }
+
         public bool CheckAdmin(User? user) {
 
             if (user == null)
