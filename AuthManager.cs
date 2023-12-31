@@ -54,6 +54,11 @@ namespace COMP2001 {
 
         }
 
+        public void RemoveToken(string token) {
+            tokenFromID.Remove(authTokens[token].UserID);
+            authTokens.Remove(token);
+        }
+
         public int GetIDFromToken(string token) {
 
             if (!authTokens.ContainsKey(token))
