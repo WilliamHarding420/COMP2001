@@ -26,12 +26,14 @@ namespace COMP2001 {
             });
 
             var app = builder.Build();
+            Database.app = app;
 
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment()) {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+            app.UseSwagger();
+            app.UseSwaggerUI(options => {
+                if (!app.Environment.IsDevelopment())
+                    options.SwaggerEndpoint("/COMP2001/WHarding/swagger/v1/swagger.json", "Profile API");
+            });
 
             app.UseAuthorization();
 
