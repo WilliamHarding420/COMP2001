@@ -6,6 +6,8 @@ using System.Data.SqlClient;
 namespace COMP2001 {
     public class Database : DbContext {
 
+        public static WebApplication? app;
+
         public static string ConnectionString = "Server=localhost;" +
             "Database=comp2001;" +
             "User Id=SA;" +
@@ -14,6 +16,22 @@ namespace COMP2001 {
 
         public Database()
             :base() {
+
+            if (app == null)
+                Environment.Exit(1);
+
+            // Connection details for local development
+            if (app.Environment.IsDevelopment())
+                ConnectionString =  "Server=localhost;" +
+                                    "Database=comp2001;" +
+                                    "User Id=SA;" +
+                                    "Password=DBPassword123;" +
+                                    "TrustServerCertificate=True;";
+
+            // Connection details for deployment
+            else
+                ConnectionString =  "";
+
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
