@@ -28,6 +28,8 @@ namespace COMP2001 {
             var app = builder.Build();
             Database.app = app;
 
+            app.UseHttpsRedirection();
+
             // Configure the HTTP request pipeline.
             app.UseSwagger();
             app.UseSwaggerUI(options => {
