@@ -19,7 +19,7 @@ namespace COMP2001.Controllers {
         /// </summary>
         /// <param name="bodyUser">The user to add to the database</param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPut]
         [Consumes("application/json")]
         [Produces("application/json")]
         public async Task<string> NewUser([FromBody] BodyUser bodyUser) {

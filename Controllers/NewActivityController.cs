@@ -18,7 +18,7 @@ namespace COMP2001.Controllers {
         /// </summary>
         /// <param name="bodyActivity">The activity to add</param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPut]
         [Consumes("application/json")]
         [Produces("application/json")]
         public async Task<string> NewActivity([FromBody] BodyActivity bodyActivity) {

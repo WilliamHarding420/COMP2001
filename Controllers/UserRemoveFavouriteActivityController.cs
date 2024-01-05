@@ -15,7 +15,7 @@ namespace COMP2001.Controllers {
         /// </summary>
         /// <param name="activityDelete">Your auth token and activity to remove.</param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpDelete]
         [Produces("application/json")]
         [Consumes("application/json")]
         public async Task<string> RemoveFavouriteActivity([FromBody] ActivityEdit activityDelete) {

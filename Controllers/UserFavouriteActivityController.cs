@@ -18,7 +18,7 @@ namespace COMP2001.Controllers {
         /// </summary>
         /// <param name="activityAdd">Your auth token and activity ID.</param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPut]
         [Produces("application/json")]
         [Consumes("application/json")]
         public async Task<string> FavouriteActivity([FromBody] ActivityEdit activityAdd) {

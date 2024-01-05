@@ -14,12 +14,12 @@ namespace COMP2001.Controllers {
             public int ActivityID { get; set; }
         }
 
-        [HttpPost]
         /// <summary>
         /// This deletes an activity with the given ID
         /// </summary>
         /// <param name="bodyActivity">Your token and the Activity's ID</param>
         /// <returns></returns>
+        [HttpDelete]
         [Produces("application/json")]
         [Consumes("application/json")]
         public async Task<string> DeleteActivity([FromBody] ActivityDelete bodyActivity) {
