@@ -15,6 +15,11 @@ namespace COMP2001.Controllers {
         }
 
         [HttpPost]
+        /// <summary>
+        /// This deletes an activity with the given ID
+        /// </summary>
+        /// <param name="bodyActivity">Your token and the Activity's ID</param>
+        /// <returns></returns>
         [Produces("application/json")]
         [Consumes("application/json")]
         public async Task<string> DeleteActivity([FromBody] ActivityDelete bodyActivity) {

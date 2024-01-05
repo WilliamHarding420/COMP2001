@@ -10,6 +10,12 @@ namespace COMP2001.Controllers {
     public class DeleteUserController {
 
         [HttpPost]
+        /// <summary>
+        /// Deletes the user with the given ID
+        /// </summary>
+        /// <param name="id">The user's ID</param>
+        /// <param name="auth">Your authorization</param>
+        /// <returns></returns>
         [Produces("application/json")]
         [Consumes("application/json")]
         public async Task<string> DeleteUser([FromRoute] int id, [FromBody] InfoAuth auth) {
