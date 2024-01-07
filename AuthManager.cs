@@ -37,8 +37,14 @@ namespace COMP2001 {
 
         public string AuthorizeUser(int userID) {
 
-            if (tokenFromID.ContainsKey(userID)) 
-                return tokenFromID[userID];
+            if (tokenFromID.ContainsKey(userID))
+            {
+                if (authTokens[tokenFromID[userID]].ExpirationTime > CurrentUnixTimeStamp())
+                    return tokenFromID[userID];
+
+                // Remove and regenerate token if expired and user reauthorized
+                RemoveToken(tokenFromID[userID]);
+            }
 
             string token = GenerateNewToken();
 
